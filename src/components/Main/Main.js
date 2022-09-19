@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Main.css';
-import { animals } from '../../data';
 import Animal from '../Animal/Animal';
 import background from '../../background.png';
+import { fetchAnimals } from '../../services/animals';
+
+function useAnimals() {}
 
 export default function Main() {
+  const [update, setUpdate] = useState(false);
+  const [animals, setAnimals] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchAnimals();
+      setAnimals(data);
+    }
+    fetchData();
+  }, [update]);
   return (
     <main style={{ backgroundImage: `url(${background})` }}>
       {animals.map((animal) => (
@@ -18,6 +29,13 @@ export default function Main() {
           {...animal}
         />
       ))}
+      <button
+        onClick={() => {
+          setUpdate((prev) => !prev);
+        }}
+      >
+        Click Me
+      </button>
     </main>
   );
 }
