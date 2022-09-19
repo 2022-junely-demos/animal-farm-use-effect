@@ -2,16 +2,9 @@ import './Main.css';
 import Animal from '../Animal/Animal';
 import background from '../../background.png';
 import { useAnimals } from '../../hooks/useAnimals';
-import { useState } from 'react';
 
 export default function Main() {
-  const animals = useAnimals();
-  const [type, setType] = useState('all');
-
-  const filterAnimals = () => {
-    if (type === 'all') return animals;
-    return animals.filter((animal) => animal.type === type);
-  };
+  const { filterAnimals, type, setType } = useAnimals();
 
   return (
     <main style={{ backgroundImage: `url(${background})` }}>
