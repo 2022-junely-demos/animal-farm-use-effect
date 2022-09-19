@@ -1,35 +1,36 @@
-import React, { useEffect, useState } from 'react';
 import './Main.css';
 import Animal from '../Animal/Animal';
 import background from '../../background.png';
-import { fetchAnimals } from '../../services/animals';
-
-function useAnimals() {
-  const [animals, setAnimals] = useState([]);
-  useEffect(() => {
-    async function fetchData() {
-      const data = await fetchAnimals();
-      setAnimals(data);
-    }
-    fetchData();
-  }, []);
-  return animals;
-}
+import { useAnimals } from '../../hooks/useAnimals';
+import { useState } from 'react';
 
 export default function Main() {
   const animals = useAnimals();
+  const [type, setType] = useState('all');
+
+  const filterAnimals = () => {
+    if (type === 'all') return animals;
+    return animals.filter((animal) => animal.type === type);
+  };
+
   return (
     <main style={{ backgroundImage: `url(${background})` }}>
-      {animals.map((animal) => (
-        <Animal
-          key={animal.name}
-          // name={animal.name}
-          // type={animal.type}
-          // top={animal.top}
-          // left={animal.left}
-          // says={animal.says}
-          {...animal}
-        />
+      <select
+        value={type}
+        onChange={(e) => {
+          setType(e.target.value);
+        }}
+      >
+        <option value="all">All</option>
+        <option value="pig">Pig</option>
+        <option value="sheep">Sheep</option>
+        <option value="donkey">Donkey</option>
+        <option value="cow">Cow</option>
+        <option value="goose">Goose</option>
+        <option value="spider">Spider</option>
+      </select>
+      {filterAnimals().map((animal) => (
+        <Animal key={animal.name} {...animal} />
       ))}
     </main>
   );
