@@ -7,3 +7,7 @@ main {
   align-content: flex-start;
   position: relative;
 }
+
+.error {
+  color: white;
+}

@@ -4,11 +4,17 @@ import { fetchAnimals } from '../services/animals';
 export function useAnimals() {
   const [animals, setAnimals] = useState([]);
   const [type, setType] = useState('all');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function fetchData() {
-      const data = await fetchAnimals();
-      setAnimals(data);
+      try {
+        const data = await fetchAnimals();
+        setAnimals(data);
+      } catch (e) {
+        console.log(e);
+        setError(e.message);
+      }
     }
     fetchData();
   }, []);
@@ -18,5 +24,5 @@ export function useAnimals() {
     return animals.filter((animal) => animal.type === type);
   };
 
-  return { filterAnimals, type, setType };
+  return { filterAnimals, type, setType, error };
 }
